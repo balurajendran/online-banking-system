@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+h1, h2 {
+    color: #003366;
+}
+table {
+    width: 70%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+td, th {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #0066cc;
+}
+a:hover {
+    text-decoration: underline;
+}
