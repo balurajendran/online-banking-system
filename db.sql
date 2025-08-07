@@ -1,37 +1,42 @@
-CREATE DATABASE IF NOT EXISTS banking_db;
-USE banking_db;
-
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE User (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    password VARCHAR(255),   -- hashed password
-    balance DECIMAL(10,2) DEFAULT 0
+    password VARCHAR(255),
+    phone VARCHAR(15),
+    address VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_email VARCHAR(100),
-    type ENUM('deposit', 'withdraw'),
-    amount DECIMAL(10,2),
-    date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE Account (
+    account_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    balance DECIMAL(10, 2) DEFAULT 0.00,
+    is_frozen BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
-CREATE TABLE accounts (
-    account_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    balance DECIMAL(10,2) DEFAULT 0.00,
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+
+CREATE TABLE Transaction (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT,
+    type VARCHAR(50), -- e.g., 'deposit', 'withdraw'
+    amount DECIMAL(10, 2),
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    category VARCHAR(50),
+    FOREIGN KEY (account_id) REFERENCES Account(account_id)
 );
-CREATE TABLE budgets (
-    user_id INT PRIMARY KEY,
-    monthly_limit DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+
+CREATE TABLE Budget (
+    budget_id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT,
+    monthly_limit DECIMAL(10, 2),
+    month_year VARCHAR(7), -- format: YYYY-MM
+    FOREIGN KEY (account_id) REFERENCES Account(account_id)
 );
-Table LoginSession {
-  session_id int [pk]
-  user_id int [ref: > User.user_id]
-  login_time datetime
-  logout_time datetime
-}
+
+CREATE TABLE LoginSession (
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    login_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logout_time DATETIME,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
