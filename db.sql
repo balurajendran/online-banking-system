@@ -16,3 +16,17 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount DECIMAL(10,2),
     date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE accounts (
+    account_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    balance DECIMAL(10,2) DEFAULT 0.00,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+CREATE TABLE budgets (
+    user_id INT PRIMARY KEY,
+    monthly_limit DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
