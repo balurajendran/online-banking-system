@@ -29,4 +29,9 @@ CREATE TABLE budgets (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
+Table LoginSession {
+  session_id int [pk]
+  user_id int [ref: > User.user_id]
+  login_time datetime
+  logout_time datetime
+}
